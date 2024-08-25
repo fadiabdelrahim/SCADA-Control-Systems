@@ -371,7 +371,15 @@ Nmap is an open source network discovery and audit tool used by network admins t
 
 ---
 
+## <p align="center">Part 4: SCADA Control System Network Packet Alteration and Injection
 
+**Purpose:** The purpose of part 4 in this Lab exercise is to learn about vulnerabilities commonly found within SCADA control systems. This lab demonstrates how to exploit common vulnerabilities by injecting traffic and altering data which will compromise the integrity of the SCADA system.
+
+**Objective:** Conduct a man-in-the-middle (MITM) attack using Ettercap. The text-only version of Ettercap will be installed on a new Docker container and used to conduct the MITM attack. Once installed and configured, an Ettercap script will be used to drop Modbus/TCP Query packets. Ettercap script will be created/used to change pressure in the Gas Pipeline.
+
+**Part 4 Setup and Requiirements:** Need the VM and Gas Pipeline Docker containers running. Refer to part 1 for virtual machine and Docker containers setup instructions. Wireshark and the Gas Pipeline HMI need to be running as well to observe traffic modification.
+
+## Step 1: MITM Setup and Install ettercap
 
 
 
