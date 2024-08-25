@@ -267,10 +267,17 @@ also used by hackers to gather data in transit.
 
 ---
 
+## <p align="center">Part 3: SCADA CONTROL SYSTEM NETWORK ENUMERATION AND DENIAL OF SERVICE
 
+**Purpose:** The purpose of part 3 in this Lab exercise is to learn about reconnaissance techniques which expose vulnerabilities commonly found within SCADA control systems.
 
+**Objective:** Use tools to scan the SCADA environment to discover information about the network. Using the reconnaissance information, launch a Denial of Service attack against the SCADA control system.
 
+**Part 3 Lab Setup and Requirements:** Need to have the virtual machine and the Water Pump Docker containers running. Nmap and Low Orbit Ion Canon (LOIC) will be used to conduct the network scan and launch the Denial of Service attack.
 
+## Step 1: Introduction to NMAP/ZENMAP
+
+Nmap is an open source network discovery and audit tool used by network admins to monitor networks and by hackers to learn more about their target. Nmap is used to perform security scans and network audits. It scans for live hosts, operating systems, packet filters and open ports running on remote hosts. Zenmap is the official GUI for Nmap.
 
 
 
