@@ -170,6 +170,114 @@ Facts about Modbus include:
 
 ## Step 2: Use Water Tank and verify traffic with Radzio! Modbus Master Simulator
 
+<div align="center">Start the Water Tank Containers, run ./watertank.sh</div>
+<p align="center"><img src=images/Picture35.png></p>
+
+<div align="center">Verify the Modbus traffic using a tool called Radzio. Opena a terminal and navigate to /home/ccre/scadalab/lab2/Radzio</div>
+<p align="center"><img src=images/Picture36.png></p>
+
+<div align="center">Run wine RMMS.exe to launch the tool</div>
+<p align="center"><img src=images/Picture37.png></p>
+
+<div align="center">Select File > New to open a new table</div>
+<p align="center"><img src=images/Picture38.png></p>
+
+<div align="center">Select Connection > Settings</div>
+<p align="center"><img src=images/Picture39.png></p>
+
+<div align="center">Select Modbus TCP protocol. IP= PLC VM1 IP (100.100.100.3). TPC Port = 502. Select OK</div>
+<p align="center"><img src=images/Picture40.png></p>
+
+<div align="center">Select Connection > Connect. The Polls and Status should be increasing if the Modbus traffic is successfully being transmitted from the PLC container</div>
+<p align="center"><img src=images/Picture41.jpg></p>
+<p align="center"><img src=images/Picture42.png></p>
+
+## Step 3: Introduction to Wireshark & Traffic Capture
+
+Wireshark is a widely-used network protocol analyzer. With Wireshark, you can view
+your network at a microscopic level and use it to capture packets for analysis. It's
+also used by hackers to gather data in transit.
+
+<div align="center">Launch Wireshark (Applications > Internet > Wireshark)</div>
+<p align="center"><img src=images/Picture43.png></p>
+
+<div align="center">Go to the Capture > Options list and select the interface you want to begin capturing traffic on (plcnet0)</div>
+<p align="center"><img src=images/Picture44.png></p>
+
+<div align="center">Select Capture to start capturing the network traffic</div>
+<p align="center"><img src=images/Picture45.png></p>
+
+<div align="center">Stop Capture after one minute. Take note of the columns and information captured by Wireshark</div>
+<p align="center"><img src=images/Picture46.png></p>
+
+## Step 4: Wireshark filters
+
+<div align="center">Apply the following filter. Ip.addr == 100.100.100.1 this filter is used to focus on packets that are source or destination</div>
+<p align="center"><img src=images/Picture47.png></p>
+
+<div align="center">Apply the following filter. ip.addr == 100.100.100.1 && ip.addr == 100.100.100.3 this filter will show only traffic between the virtual machine and the PLC container</div>
+<p align="center"><img src=images/Picture48.png></p>
+
+<div align="center">http or dns this filter will show traffic over TCP port 80 (HTTP) and TCP port 53 (DNS)</div>
+<p align="center"><img src=images/Picture49.png></p>
+
+<div align="center">tcp.port==502 this filter will show traffic over TCP port 502 (Modbus)</div>
+<p align="center"><img src=images/Picture50.png></p>
+
+<div align="center">tcp.flags.reset this filter will show traffic with TCP reset flag</div>
+<p align="center"><img src=images/Picture51.png></p>
+
+<div align="center">http.request this filter will show all HTTP get request</div>
+<p align="center"><img src=images/Picture52.png></p>
+
+<div align="center">tcp contains traffic this filter will show all TCP traffic</div>
+<p align="center"><img src=images/Picture53.png></p>
+
+<div align="center">!(http or dns) this filter will remove all HTTP and DNS traffic</div>
+<p align="center"><img src=images/Picture54.png></p>
+
+<div align="center">tcp.analysis.retransmission this filter will show all retransmissions</div>
+<p align="center"><img src=images/Picture55.png></p>
+
+<div align="center">Another way to filter for Modbus traffic is mbtcp. Apply this filter to see the traffic between the HMI (100.100.100.2) and the PLC (100.100.100.3) containers</div>
+<p align="center"><img src=images/Picture56.png></p>
+
+## Step 5: Python script to open network socket and inject traffic
+
+<div align="center">Open terminal from the Lab 2 directory /home/ccre/scadalab/lab2</div>
+<p align="center"><img src=images/Picture57.png></p>
+
+<div align="center">Run nano modbus.py to open the script to update the IP address</div>
+<p align="center"><img src=images/Picture58.png></p>
+
+<div align="center">Add the PLC IP (100.100.100.3) to the script and save and close</div>
+<p align="center"><img src=images/Picture59.png></p>
+
+<div align="center">Run python3 modbus.py. Press any key and enter to send a new packet. To quit, hit enter</div>
+<p align="center"><img src=images/Picture60.png></p>
+
+<div align="center">Launch Wireshark. Go to the Capture > Options list and select the interface plcnet0 and Start Capture</div>
+<p align="center"><img src=images/Picture61.png></p>
+
+<div align="center">Send a few packets for Wireshark to capture</div>
+<p align="center"><img src=images/Picture62.png></p>
+
+<div align="center">Use filter ip.addr == 100.100.100.1 to see the traffic from the virtual machine. Find where the Modbus traffic injected from the host</div>
+<p align="center"><img src=images/Picture63.png></p>
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
