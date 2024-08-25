@@ -1,5 +1,17 @@
 # <p align="center">SCADA Control Systems
 
+## Introduction
+
+In this SCADA lab project, the focus was on exploring the security and operational aspects of Supervisory Control and Data Acquisition (SCADA) systems, which are critical for managing industrial processes. This project was designed to provide hands-on experience with various tools and techniques used in SCADA environments, ranging from basic system setup and network scanning to more advanced security measures such as intrusion detection and mitigation of network attacks. Through a series of structured parts, the project aimed to enhance understanding of how SCADA systems operate and how they can be protected against potential cybersecurity threats. Each part of this lab was structured to build on the previous part, progressively introducing more complex scenarios to simulate real-world challenges faced by SCADA systems.
+
+## Overview
+
+This SCADA lab project is centered on understanding and securing Supervisory Control and Data Acquisition (SCADA) systems, which are integral to the operation of critical infrastructure in various industries, including utilities, manufacturing, and transportation. The project comprises a series of lab exercises designed to provide practical experience in both the operation and protection of SCADA systems.
+
+The labs cover a broad range of topics, starting with the basic setup of SCADA environments using VirtualBox and Docker, followed by network scanning and enumeration techniques using tools like Nmap and Zenmap. As the labs progress, more advanced topics are introduced, such as the use of Wireshark for network traffic analysis, implementation of Intrusion Detection Systems (IDS) using Snort, and the execution of Man-in-the-Middle (MITM) attacks to understand potential vulnerabilities.
+
+The project also delves into the implementation of secure communication protocols, such as IPsec, to enhance the confidentiality and integrity of data transmitted over SCADA networks. Additionally, it explores the creation of custom Snort rules to detect specific types of traffic, such as Modbus communications, and respond to network attacks, including Denial of Service (DoS) and port scanning attempts.
+
 ## <p align="center">Part 1: Introduction to SCADA Control Systems
 
 **Purpose:** The purpose of part 1 in this Lab exercise is to get familiarized with SCADA Control Systems, Docker containers and begin configuring the virtual environment that will be used throughout the remaining labs.
@@ -710,7 +722,9 @@ The reputation preprocessor was created to allow Snort to use a file full of jus
 <div align="center">Open a new terminal on the VM and run sudo docker exec HMI ipsec restart && docker exec plc0 ipsec restart (If receive permission errors, run commands separately or directly on shell of the containers)</div>
 <p align="center"><img src=images/Picture199.png></p>
 
+## Conclusion
 
+This SCADA lab project provided a comprehensive exploration of the key aspects of SCADA system security and operation. By engaging with tools like Nmap, Wireshark, Snort, and Ettercap, the project highlighted the vulnerabilities present in SCADA networks and demonstrated effective strategies for detecting and mitigating these risks. The hands-on exercises reinforced the importance of securing industrial control systems against potential cyber threats, showcasing how network traffic can be monitored, filtered, and protected. Overall, the project emphasized the critical role of cybersecurity in maintaining the integrity and functionality of SCADA systems, equipping participants with practical skills and knowledge essential for safeguarding these vital infrastructures.
 
 
 
