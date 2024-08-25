@@ -15,8 +15,8 @@ Get familiarized with Docker https://docker-curriculum.com/
 ## Step 2: Introduction to the UAH SCADA and DOCKER Environment
 
 The UAH environment will utilize Virtual Box and Docker to simulate two industrial control systems:
-- One Tank Water Pump-Three Docker Containers (PLC, HMI & Sbox)
-- One Station Gas Pipeline-Three Docker Containers (PLC, HMI & Sbox)
+- One Tank Water Pump -Three Docker Containers (PLC, HMI & Sbox)
+- One Station Gas Pipeline -Three Docker Containers (PLC, HMI & Sbox)
 
 The Water Tank and Gas Pipeline can only be run individually. Login for the virtual machine = (username:ccre, password:ccre) (username:root,password:toor). Recommend logging in as ccre and using sudo to execute privileged commands. NOTE: Any time sudo is used to execute privileged commands you will have to enter the ccre password:ccre
 - PLC (Programmable Logic Controller) container is running on Debian with OpenPLC.
@@ -461,11 +461,15 @@ Ettercap is a comprehensive suite for man-in-the-middle (MITM) attacks. It featu
 
 ---
 
+## Part 5: SCADA CONTROL SYSTEM NETWORK INTRUSTION DETECTION
 
+**Purpose:** The purpose of part 5 in this Lab exercise is to learn about detecting and preventing attacks in SCADA control systems. The installation, configuration, and setup of the Snort Intrusion Detection System will be carried out to detect potential attacks.
 
+**Objective:** Install and configure Snort to monitor the SCADA network traffic and configure Snort rules to detect/alert on Modbus traffic. Whitelist Modbus traffic in the Snort configuration files and write rules to detect DoS attack and NMAP scan.
 
+**Part 5 Setup and Requirements:** Need to have the VM and either the Gas Pipeline or Water Pump Docker containers running. The browser on the SCADA VM will need internet access to download Snort files.
 
-
+## Step 1: Installing Snort
 
 
 
