@@ -1,4 +1,4 @@
-# <p align="center">SCADA-Control-Systems
+# <p align="center">SCADA Control Systems
 
 ## <p align="center">Part 1: Introduction to SCADA Control Systems
 
@@ -31,5 +31,133 @@ The following scripts are provided on the virtual machine (/home/ccre/scadalab/s
 - ***cleanup.sh*** - Brute Force, removes all containers
 
 ## Step 3: Setup SCADA LAB Enviroment
+
+***Part 1: Import the virtual machine into virtual box.***
+
+<div align="center">Click “Choose a virtual appliance file to import” icon and browse to the scadalab.ova.</div>
+<p align="center"><img src=images/Picture1.png></p>
+
+<div align="center">Click “Finish”</div>
+<p align="center"><img src=images/Picture2.png></p>
+
+***Part 2: Login to virtual machine and run Water Tank Docker containers.***
+
+<div align="center">To start the virtual machine in the VirtualBox Manager, select the scadalab VM, and select Start.</div>
+<p align="center"><img src=images/Picture3.png></p>
+
+<div align="center">Login using the credentials (username:ccre, password:ccre)</div>
+<p align="center"><img src=images/Picture4.png></p>
+
+<div align="center">Start Docker by running sudo service docker start</div>
+<p align="center"><img src=images/Picture5.png></p>
+
+<div align="center">Navigate to the scripts folder /home/ccre/scadalab/scripts and run the script to configure the network ./netstart.sh</div>
+<p align="center"><img src=images/Picture6.png></p>
+
+<div align="center">Start the Water Tank containers, run ./watertank.sh</div>
+<p align="center"><img src=images/Picture7.png></p>
+
+<div align="center">To verify the containers loaded and started correctly, run sudo docker ps in a terminal to view the status of the containers.</div>
+<p align="center"><img src=images/Picture8.png></p>
+
+<div align="center">To launch the water tank HMI, pull up the internet browser on the virtual machine and navigate to 100.100.100.2:8080/ScadaBR then login to ScadaBR (username:ccre, password:ccre)</div>
+<p align="center"><img src=images/Picture9.png></p>
+
+<div align="center">Verify the IP address of the Modbus data source is pointing to your PLC container (100.100.100.3 – Water Tank). Click on Data Sources on the top menu.</div>
+<p align="center"><img src=images/Picture10.png></p>
+
+<div align="center">Click on the edit button for the Water Tank</div>
+<p align="center"><img src=images/Picture11.png></p>
+
+<div align="center">Once the edit screen is open, verify the IP address matches the PLC container IP 100.100.100.3 for the Water Tank and then click on the blue floppy disk to save</div>
+<p align="center"><img src=images/Picture12.png></p>
+
+Go back to the Data Sources screen and enable the water tank data sources to allow ScadaBR to pull data from OpenPLC
+<p align="center"><img src=images/Picture13.png></p>
+
+<div align="center">Click on Graphical Views</div>
+<p align="center"><img src=images/Picture14.png></p>
+
+<div align="center">Select the HMI Water Tank. Verify the levels are changing on the Water Tank HMI.</div>
+<p align="center"><img src=images/Picture15.png></p>
+
+<div align="center">Disable the Water Tank Data Source</div>
+<p align="center"><img src=images/Picture16.png></p>
+
+<div align="center">Start the Single Gas Pipeline, run ./gaspipeline.sh</div>
+<p align="center"><img src=images/Picture17.png></p>
+
+<div align="center">To verify the containers loaded and started correctly, run sudo docker ps in a terminal to view the status of the containers.</div>
+<p align="center"><img src=images/Picture18.png></p>
+
+<div align="center">Click on the edit button for the Single Gas Pipeline</div>
+<p align="center"><img src=images/Picture19.png></p>
+
+<div align="center">Once the edit screen is open, verify the IP address matches the PLC container IP 100.100.100.4 for the Single Gas Pipeline and then click on the blue floppy disk to save</div>
+<p align="center"><img src=images/Picture20.png></p>
+
+Go back to the Data Sources screen and enable the Single Gas Pipeline data sources to allow ScadaBR to pull data from OpenPLC
+<p align="center"><img src=images/Picture21.png></p>
+
+<div align="center">Select the HMI Single Gas Pipeline. Verify the levels are changing on the Single Gas Pipeline HMI.</div>
+<p align="center"><img src=images/Picture22.png></p>
+
+<div align="center">Disable all data sources</div> 
+<p align="center"><img src=images/Picture23.png></p>
+
+<div align="center">Run cleanup script ./cleanup</div>
+<p align="center"><img src=images/Picture24.png></p>
+
+## Step 4: Interact with HMI and Configure for Unsafe Operations
+
+***Part 1: Interact with the Water Tank HMI***
+
+<div align="center">To start the Water Tank containers, run ./watertank.sh</div>
+<p align="center"><img src=images/Picture25.png></p>
+
+<div align="center">Enable the Water Tank Data Source</div>
+<p align="center"><img src=images/Picture26.png></p>
+
+<div align="center">Pull up the Water Tank HMI in ScadaBR</div>
+<p align="center"><img src=images/Picture27.png></p>
+
+<div align="center">Turn the Pump On by turning on Manual Mode and clicking the “Pump ON” button. Wait 30 seconds and observe the water tank activity</div>
+<p align="center"><img src=images/Picture28.png></p>
+
+<div align="center">Now turn the Pump Off by clicking the “Pump OFF” button and observe the activity</div>
+<p align="center"><img src=images/Picture29.png></p>
+
+<div align="center">Turn the HMI on Auto and observe the fluctuations in water levels.</div>
+<p align="center"><img src=images/Picture30.png></p>
+
+<div align="center">Change setpoints to Minimum=20 and Maximum=25 and observe the difference when range is narrowed</div>
+<p align="center"><img src=images/Picture31.png></p>
+
+***Part 2: Configure Water Pump for Unsafe Operation***
+
+<div align="center">Attack 1 – Set the Minimum setpoint more than the Maximum setpoint</div>
+<p align="center"><img src=images/Picture32.png></p>
+
+<div align="center">Attack 2 – Set the Minimum setpoint to -5</div>
+<p align="center"><img src=images/Picture33.png></p>
+
+<div align="center">Attack 3 – set Maximum setpoint to more than 100</div>
+<p align="center"><img src=images/Picture34.jpg></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
