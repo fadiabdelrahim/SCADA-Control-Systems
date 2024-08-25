@@ -644,6 +644,71 @@ The reputation preprocessor was created to allow Snort to use a file full of jus
 
 ---
 
+## Part 6: SCADA CONTROL SYSTEM NETWORK ADDING CONFIDENTIALITY AND AUTHENTICATION
+
+**Purpose:** The purpose of part 6 in this Lab exercise is to learn how to encrypt traffic over a network by implementing IPsec on the SCADA Control System Network.
+
+**Objective:** Install and configure strongSwan on the PLC container in order to implement secure communications on the SCADA network traffic. The modification and creation of IPSec configurations will be performed to enable both transport and tunnel modes.
+
+**Part 6 Setup and Requirements:** need to have the VM and Water Tank Docker containers running. strongSwan will be configured and run on the Water Tank containers.
+
+## Step 1: Configure strongSwan on PLC container
+
+<div align="center">Open a shell on the plc container, run sudo docker exec -it plc0 bash from a terminal on the virtual machine</div>
+<p align="center"><img src=images/Picture182.png></p>
+
+<div align="center">Run nano /etc/ipsec.conf</div>
+<p align="center"><img src=images/Picture183.png></p>
+
+<div align="center">Add the following under “#Add connections here”</div>
+<p align="center"><img src=images/Picture184.png></p>
+
+<div align="center">Run nano /etc/ipsec.secrets and add the following</div>
+<p align="center"><img src=images/Picture185.png></p>
+<p align="center"><img src=images/Picture186.png></p>
+
+## Step 2: Start IPSec services on PLC and HMI containers
+
+<div align="center">To open a shell on the plc container, run sudo docker exec -it plc0 bash from a terminal on the virtual machine</div>
+<p align="center"><img src=images/Picture187.png></p>
+
+<div align="center">Run ipsec restart</div>
+<p align="center"><img src=images/Picture188.png></p>
+
+<div align="center">To open a shell on the HMI container run sudo docker exec -it HMI sh from a terminal on the virtual machine</div>
+<p align="center"><img src=images/Picture189.png></p>
+
+<div align="center">Run ipsec restart</div>
+<p align="center"><img src=images/Picture190.png></p>
+
+<div align="center">Start Wireshark to view encrypted traffic. Press “OK” and double click plcnet0. If everything is setup correctly, you should see esp’s (encapsulated security packets) being sent back and forth</div>
+<p align="center"><img src=images/Picture191.png></p>
+
+## Step 3: Changing from Transport mode to Tunnel mode
+
+<div align="center">To open a shell on the plc container, run sudo docker exec-it plc0 bash from a terminal on the virtual machine</div>
+<p align="center"><img src=images/Picture192.png></p>
+
+<div align="center">Run nano /etc/ipsec.conf</div>
+<p align="center"><img src=images/Picture193.png></p>
+
+<div align="center">Change type=tunnel</div>
+<p align="center"><img src=images/Picture194.png></p>
+
+<div align="center">To open a shell on the HMI container, run sudo docer exec -it HMI sh from a terminal on the virtual machine</div>
+<p align="center"><img src=images/Picture195.png></p>
+
+<div align="center">Run apk update && apk add nano to update the repositories and install package for configuring files</div>
+<p align="center"><img src=images/Picture196.png></p>
+
+<div align="center">Run nano /etc/ipsec.conf</div>
+<p align="center"><img src=images/Picture197.png></p>
+
+<div align="center">Change type=tunnel</div>
+<p align="center"><img src=images/Picture198.png></p>
+
+<div align="center">Open a new terminal on the VM and run sudo docker exec HMI ipsec restart && docker exec plc0 ipsec restart (If receive permission errors, run commands separately or directly on shell of the containers)</div>
+<p align="center"><img src=images/Picture199.png></p>
 
 
 
