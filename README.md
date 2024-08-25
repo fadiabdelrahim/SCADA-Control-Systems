@@ -471,7 +471,178 @@ Ettercap is a comprehensive suite for man-in-the-middle (MITM) attacks. It featu
 
 ## Step 1: Installing Snort
 
+Snort is an open source network intrusion prevention system, capable of performing real-time traffic analysis and packet logging on IP networks. It can perform protocol analysis, content searching/matching, and can be used to detect a variety of attacks and probes, such as buffer overflows, stealth port scans, CGI attacks, SMB probes, OS fingerprinting attempts, and much more. It can be used as a straight packet sniffer like tcpdump, a packet logger (useful for network traffic debugging, etc), or as a full blown network intrusion prevention system.
 
+Open a terminal on the host VM and run the following commands: Run su root and enter password: toor
+<p align="center"><img src=images/Picture118.png></p>
+
+Run apt-get clean
+<p align="center"><img src=images/Picture119.png></p>
+
+Run rm -rf /var/lib/apt/lists/*
+<p align="center"><img src=images/Picture120.png></p>
+
+Run apt-get clean
+<p align="center"><img src=images/Picture121.png></p>
+
+Edit source list. Run nano /etc/apt/sources.list
+<p align="center"><img src=images/Picture122.png></p>
+
+Add archive repository
+<p align="center"><img src=images/Picture123.png></p>
+
+Run apt-get update
+<p align="center"><img src=images/Picture124.png></p>
+
+Run apt-get install build-essential libpcap-dev libpcre3-dev libdumbnet-dev bison flex zlib1g-dev libdnet
+<p align="center"><img src=images/Picture125.png></p>
+
+Make a temporary download folder to your home directory and then move into it
+<p align="center"><img src=images/Picture126.png></p>
+
+Download the Data Acquisition library to make abstract calls to packet capture libraries wget –no-check-certificate https://www.snort.org/downloads/archives/snort/daq-2.0.6.tar.gz 
+<p align="center"><img src=images/Picture127.png></p>
+
+Extract the source code and jump into the new directory with the following commands. Run tar -xvzf daq-2.0.7.tar.gz
+<p align="center"><img src=images/Picture128.png></p>
+
+Run cd daq-2.0.7
+<p align="center"><img src=images/Picture129.png></p>
+
+To configure the file and install enter the following commands:
+<p align="center"><img src=images/Picture130.png></p>
+<p align="center"><img src=images/Picture131.png></p>
+<p align="center"><img src=images/Picture132.png></p>
+
+Now that DAQ is installed, switch back to the download folder Run cd ~/snort_src
+<p align="center"><img src=images/Picture133.png></p>
+
+Download the latest version of Snort: wget –no-check-certificate https://www.snort.org/downloads/archive/snort/snort-2.9.9.9.tart.gz
+<p align="center"><img src=images/Picture134.png></p>
+
+When the download is done, extract the source and change to the new directory. Run tar -xvzf snort-2.9.9.0.tar.gz
+<p align="center"><img src=images/Picture135.png></p>
+
+To enable the sourcefire mode and install, enter the following commands:
+<p align="center"><img src=images/Picture136.png></p>
+<p align="center"><img src=images/Picture137.png></p>
+<p align="center"><img src=images/Picture138.png></p>
+
+## Step 2: Configure Snort to run as Network Intrusion Detection System (NIDS)
+
+Update the shared libraries with the following command: sudo ldconfig
+<p align="center"><img src=images/Picture139.png></p>
+
+Snort gets installed to /usr/local/bin/snort directory. To create a symbolic link to /usr/sbin/snort with the following command: sudo ln -s /usr/local/bin/snort /usr/sbin/snort
+<p align="center"><img src=images/Picture140.png></p>
+
+We will not use it in this lab, but a good practice to run Snort safely without root access, you should create a new unprivileged user and a new user group for the daemon to run under, with the following commands:
+<p align="center"><img src=images/Picture141.png></p>
+
+Create the folder structure to house the snort configuration, by copying the following commands
+<p align="center"><img src=images/Picture142.png></p>
+
+Create new files for the white and black lists as well as the local rules, and change the permissions for the new directories
+<p align="center"><img src=images/Picture143.png></p>
+<p align="center"><img src=images/Picture144.png></p>
+
+Copy the configuration files from the source to your configuration directory
+<p align="center"><img src=images/Picture145.png></p>
+
+Download the community rules using the commands below
+<p align="center"><img src=images/Picture146.png></p>
+<p align="center"><img src=images/Picture147.png></p>
+<p align="center"><img src=images/Picture148.png></p>
+
+Open the configuration file with nano /etc/snort/nort.conf
+<p align="center"><img src=images/Picture149.png></p>
+
+Under Step 1, “Setup the network address you are protecting”: change “any” to the IP range of your home net (100.100.100.0/16)
+<p align="center"><img src=images/Picture150.png></p>
+
+Under Step 1, “Set up the external network address”: change “any” to !$HOME_NET
+<p align="center"><img src=images/Picture151.png></p
+
+Under Step 1, Path to our rule files, change to:
+<p align="center"><img src=images/Picture152.png></p
+
+Under Step 1, Set the absolute path appropriately, change to:
+<p align="center"><img src=images/Picture153.png></p
+
+Under Step 6, uncomment the “output unified2” line and change it to: output unified2: filename snort.log, limit 128
+<p align="center"><img src=images/Picture154.png></p
+
+Under Step 7, remove the comment line on local rules and add the community rules: include $RULE_PATH/community.rules
+<p align="center"><img src=images/Picture155.png></p
+
+To test Snort and validate the configuration:
+<p align="center"><img src=images/Picture156.png></p
+
+<p align="center"><img src=images/Picture157.png></p
+
+<p align="center"><img src=images/Picture158.png></p
+
+## Step 3: Use Snort rule to detect Modbus traffic
+
+Open a terminal and navigate to the local.rules file (etc/snort/rules)
+<p align="center"><img src=images/Picture159.png></p
+
+Add the following Snort rules to detect traffic on port 502:
+<p align="center"><img src=images/Picture160.png></p
+
+Run Snort, sudo snort -A console -I plcnet0 -c /etc/snort/snort.conf
+<p align="center"><img src=images/Picture161.png></p
+
+Run modbus.py script (client = 100.100.100.2) to generate the Modbus traffic from the virtual machine.
+<p align="center"><img src=images/Picture162.png></p
+<p align="center"><img src=images/Picture163.png></p
+<p align="center"><img src=images/Picture164.png></p
+
+## Step 4: Whitelist Modbus client and server and write Snort rule to alert on whitelist/blacklist IPs
+
+The reputation preprocessor was created to allow Snort to use a file full of just IP addresses to identify bad hosts and trusted hosts. Malicious IP addresses are stored in blacklists, and trusted IP addresses are stored in whitelists. The reputation preprocessor loads these lists when Snort starts, and compares all traffic against those lists. Snort checks both the sending and receiving IP address in each packet against every entry in the IP lists, and if the IP addresses in the packet matches an IP address on the blacklist, whitelist, or both lists, Snort can take a few different actions: Snort can either generate an alert, block the packet, allow the packet without any other processing (skipping all other rules), or let the packet continue through the rest of the regular rule checks. The action that Snort takes depends on how you have the reputation preprocessor configured, and if Snort is running in IDS or IPS mode (Snort can only drop packets when running in IPS mode).
+
+The reputation preprocessor is configured in your snort.conf. Open the snort configuration file (/etc/snort/snort.conf) and find the section for the reputation preprocessor. Enable it by removing the hash symbol (#) from the beginning of each line
+<p align="center"><img src=images/Picture165.png></p
+<p align="center"><img src=images/Picture166.png></p
+
+There are a few other lines in your snort.conf that relate to IP lists as well. Add the location to the iplists on the following two lines that tell Snort where the folder is that stores the whitelists and blacklists
+<p align="center"><img src=images/Picture167.png></p
+
+Run the following commands to create your whitelist and blacklist files
+<p align="center"><img src=images/Picture168.png></p
+
+Add these single hosts to white_list.rules:
+<p align="center"><img src=images/Picture169.png></p
+<p align="center"><img src=images/Picture170.png></p
+<p align="center"><img src=images/Picture171.png></p
+
+To configure alerts for whitelist or blacklist IPs, you can add the following rules to local.rules
+<p align="center"><img src=images/Picture172.png></p
+<p align="center"><img src=images/Picture173.png></p
+
+## Step 5: Write Snort rule to detect NMAP scan
+
+Write Snort rule to detect NMAP scan
+<p align="center"><img src=images/Picture174.png></p
+
+Add the following lines to your snort.conf file under Step 5 and restart snort. Also, ensue the steam% preprocessor is enabled
+<p align="center"><img src=images/Picture175.png></p
+
+Launch Nmap and run a TCP SYN scan. Save a screenshot of the alerts on the console 
+<p align="center"><img src=images/Picture176.png></p
+
+<p align="center"><img src=images/Picture177.png></p
+
+## Step 6: Write Snort rule to detect DoS attack
+
+To detect a DoS attack, the following rule could be used. Add the DoS alert to local.rules
+<p align="center"><img src=images/Picture178.png></p
+
+Conduct the Dos attack from Lab 3 and save a screenshot of the alerts on the console
+<p align="center"><img src=images/Picture179.png></p
+<p align="center"><img src=images/Picture180.png></p
+<p align="center"><img src=images/Picture181.png></p
 
 
 
