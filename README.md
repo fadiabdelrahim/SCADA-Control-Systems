@@ -637,7 +637,7 @@ The reputation preprocessor was created to allow Snort to use a file full of jus
 <div align="center">To detect a DoS attack, the following rule could be used. Add the DoS alert to local.rules</div>
 <p align="center"><img src=images/Picture178.png></p>
 
-<div align="center">Conduct the Dos attack from Lab 3 and save a screenshot of the alerts on the console</div>
+<div align="center">Conduct the Dos attack from Part 3 and save a screenshot of the alerts on the console</div>
 <p align="center"><img src=images/Picture179.png></p>
 <p align="center"><img src=images/Picture180.png></p>
 <p align="center"><img src=images/Picture181.png></p>
