@@ -279,6 +279,102 @@ also used by hackers to gather data in transit.
 
 Nmap is an open source network discovery and audit tool used by network admins to monitor networks and by hackers to learn more about their target. Nmap is used to perform security scans and network audits. It scans for live hosts, operating systems, packet filters and open ports running on remote hosts. Zenmap is the official GUI for Nmap.
 
+<div align="center">Using Zenmap (Applications > Internet > Zenmap), type in the IP address target host (100.100.100.2) or the CIDR notation of the target network</div>
+<p align="center"><img src=images/Picture64.png></p>
+<p align="center"><img src=images/Picture65.png></p>
+
+<div align="center">If not already running, start Water Tank containers</div>
+<p align="center"><img src=images/Picture66.png></p>
+<p align="center"><img src=images/Picture67.png></p>
+<p align="center"><img src=images/Picture68.png></p>
+
+<div align="center">Verify Docker containers are running using sudo docker ps</div>
+<p align="center"><img src=images/Picture69.png></p>
+
+<div align="center">Open and enable the Water Tank HMI in ScadaBR</div>
+<p align="center"><img src=images/Picture70.jpg></p>
+<p align="center"><img src=images/Picture71.jpg></p>
+
+<div align="center">Xmas scan: sudo nmap -sX 100.100.100.2-3</div>
+<p align="center"><img src=images/Picture72.png></p>
+
+<div align="center">This is the Xmas scan. It sends TCP packets with the FIN, PSH, and URG flags (lighting the packet up like a Christmas tree) to the target device. If a port is closed then a RST packet will be returned. If nothing is returned, then there is a possibility that a certain port may be open. Use clues from other kinds of scans to pin down those tricky ports. The advantage to using this method is that it may bypass some unstateful firewalls and packet filters, however, some IDS can be configured to detect some of this.</div>
+
+<div align="center">Null Scan: sudo nmap -sN 100.100.100.2-3</div>
+<p align="center"><img src=images/Picture73.png></p>
+
+<div align="center">This is the null scan. It sends TCP packets with no flags set towards the target device. It behaves the same way as the Xmas scan, except with no flags.</div>
+
+<div align="center">ACK Scan: sudo nmap -sA 100.100.100.2-3</div>
+<p align="center"><img src=images/Picture74.png></p>
+
+<div align="center">This is the ACK scan. This sends an ACK packet to the target device. It can never tell you if a port is open, but it is useful for mapping out firewalls and finding out whether they are stateful or not.</div>
+
+<div align="center">TCP Connect Scan: sudo nmap -sT 100.100.100.2-3</div>
+<p align="center"><img src=images/Picture75.png></p>
+
+<div align="center">This is the TCP connect scan. It makes a full TCP connection with each target port instead of creating raw packets. Useful for users who do not have raw packet privileges and is also the Nmap default scanning technique.</div>
+
+<div align="center">SYN Scan: sudo nmap -sS 100.100.100.2-3</div>
+<p align="center"><img src=images/Picture76.png></p>
+
+<div align="center">This is a SYN Scan or Half-Open scan. It only makes half of a TCP connection with the target port.</div>
+
+## Step 2: Network Enumeration using Nmap/Zenmap
+
+<div align="center">Launch Zenmap GUI to begin enumerating the network. (You need to run Zenmap with sudo or Root in order to run a full scan</div>
+<p align="center"><img src=images/Picture77.png></p>
+<p align="center"><img src=images/Picture78.png></p>
+
+<div align="center">Enter IP range of the target network as the “Target”. Select “Quick Scan” as Profile. Command = nmap -T4 -F 100.100.100.2-3</div>
+<p align="center"><img src=images/Picture79.png></p>
+
+<div align="center">Observe nmap scan report for the details of a quick scan</div>
+<p align="center"><img src=images/Picture80.png></p>
+
+<div align="center">Scan for the specific port used by Modbus (port 502). Command = nmap -p 502 100.100.100.2-3. Record the IP with port 502 open and the name of the service in use</div>
+<p align="center"><img src=images/Picture81.png></p>
+
+## Step 3: Determine OS, Manufacturer and Model of Identified Systems
+
+<div align="center">On host VM, launch Zenmap GUI to begin run a scan to determine OS and version. Command = nmap -A 100.100.100.2-3</div>
+<p align="center"><img src=images/Picture82.png></p>
+
+## Step 4: Perform Denial of Service Attack
+
+<div align="center">Open a Terminal from Lab 3 directory (/home/ccre/scadablab/lab3)</div>
+<p align="center"><img src=images/Picture83.png></p>
+
+<div align="center">Run mono LOIC.exe</div>
+<p align="center"><img src=images/Picture84.png></p>
+<p align="center"><img src=images/Picture85.png></p>
+
+<div align="center">Enter PLC IP (100.100.100.3) at Target IP and select TCP as Method</div>
+<p align="center"><img src=images/Picture86.png></p>
+
+<div align="center">Click “IMMA CHARGIN MAH LAZER” to start flood</div>
+<p align="center"><img src=images/Picture87.png></p>
+
+## Step 5: Use Python to conduct a LAND attack
+
+<div align="center">Open a terminal and navigate to the Lab 3 directory where the python script is located</div>
+<p align="center"><img src=images/Picture88.png></p>
+
+<div align="center">Run sudo python land.py</div>
+<p align="center"><img src=images/Picture89.png></p>
+<p align="center"><img src=images/Picture90.png></p>
+
+## Step 6: Observe effects of DoS attacks on HMI
+
+<div align="center">The LAND attack and LOIC attack should overload the system as it attempts to handle the errors created by the DoS attack. The HMI will slow down, lock up and possibly crash containers and/or the VM</div>
+<p align="center"><img src=images/Picture91.png></p>
+
+---
+
+
+
+
+
 
 
 
