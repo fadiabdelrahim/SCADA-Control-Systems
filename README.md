@@ -144,12 +144,31 @@ Go back to the Data Sources screen and enable the Single Gas Pipeline data sourc
 <div align="center">Attack 3 – set Maximum setpoint to more than 100</div>
 <p align="center"><img src=images/Picture34.jpg></p>
 
+---
 
+## <p align="center">Part 2: SCADA Control System Networking
 
+**Purpose:** The purpose of part 2 in this Lab exercise is to get familiarized with Modbus/TCP protocol and analyze network traffic in the SCADA control system environment.
 
+**Objective:** To utilize Radzio to observe Modbus traffic and Wireshark to analyze network traffic. Wireshark filters will then be applied to view specific traffic and packets. Python will be used to open a network socket and send fake Modbus/TCP queries and responses to clients and servers.
 
+**Lab Setup and Requirements:** The virtual machine and the Water Tank Docker containers running. Radzio! Modbus Master Simulator and Wireshark are used to observe, capture and analyze the network traffic.
 
+## Step 1: Introduction to Modbus
 
+Modbus is a serial communications protocol published for use with its programmable logic controllers (PLCs). Modbus has become a de facto standard communication protocol, and it is now a commonly available means of connecting industrial electronic devices. Modbus is used in multiple master-slave applications to monitor and program devices, communicate between intelligent devices and sensors and instruments and monitor field devices using PCs and HMIs.
+
+Facts about Modbus include:
+- Modbus has two implantations, IP/TCP and serial
+- Modbus/TCP Relationship is that of master and slave
+- Modbus transactions are a three-step process similar to the 3-way-hand shake
+  - Request
+  - Response from PDU
+  - Exception Response PDU
+- Modbus functions include: Public, User-defined and Reserved
+- Modbus Data types are Discrete input, Discrete output (coils), input registers, and holding registers
+
+## Step 2: Use Water Tank and verify traffic with Radzio! Modbus Master Simulator
 
 
 
